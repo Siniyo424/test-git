@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Canvas Test</title>
+        <script>
+                //canvasの中身
+                let ctx;
+                //canvas のwidth
+                let cw;
+                //canvas　のheight
+                let ch;
+
+                //初期化処理
+                function init() {
+                        //IDがmycanvasのものをcanvasという変数に入れておく
+                        let canvas = document.getElementById('mycanvas');
+                        //canvasが存在しないか、canvasの中身がなければ処理終了
+                        if (!canvas || !canvas.getContext) {
+                                return false;
+                        }
+                        //canvasの中身を指し示すものを代入
+                        ctx =canvas.getContext('2d');
+                        //canvasの幅・高さを代入
+                        cw =canvas.width;
+                        ch =canvas.height;
+
+                        //実際の描写処理
+                        draw();
+                }
+
+                function draw() {
+                        //色の設定
+                        ctx.fillStyle ="rgba("+getRandomColor()+","+getRandomColor()+","+getRandomColor()+",)"+getRandomAlpha()+")";
+                        //長方形の描写
+                        ctx.fillRect(getRandomNum(cw),getRandomNum(ch),getRandomNum(cw),getRandomNum(ch));//左上のx,y,座標,高さ
+                }
+
+                //ランダムな数字を返す
+                function getRandomNum(num){
+                        return Math.floor(Math.random() * num);
+                }
+                function getRandomColor(){
+                        return Math.floor(Math.random() * 255);
+                }
+                function getRandomAlpha(){
+                        return Math.random();
+                }
+        </script>
+
+</head>
+<body onload="init();">
+        <H1>Canvas Test</H1>
+        <canvas id="mycanvas" width="1000" height="800"></canvas>
+</body>
+</html>

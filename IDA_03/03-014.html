@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>Canvas Test</title>
+        <script>
+                //canvasの中身を指し示すもの
+                let ctx;
+                //canvasのwidth幅
+                let cw;
+                //canvasのheight高さ
+                let ch;
+                //ループする回数
+                const loopNum = 255;
+
+                //初期化処理
+                function init(){
+                        //IDがmycanvasのものをcanvasという変数にいれておく
+                        let canvas = document.getElementById('mycanvas');
+                        //canvasが存在しないか、canvasの中身がなければ処理終了
+                        if(!canvas || !canvas.getContext){
+                                return false;
+                        }
+
+                        //canvasの中身を指し示すものを代入
+                        ctx = canvas.getContext('2d');
+                        //全体の透明度を設定
+                        ctx.globalAlpha = 0.5;
+                        //canvasの幅・高さを代入しておく
+                        cw = canvas.width;
+                        ch = canvas.height;
+
+                        //実際の描画処理
+                        draw();
+
+                        //一定時間ごとに書き換える
+                        setInterval("draw()", 200);
+                }
+
+                function draw(){
+                        //1. 画面をリセットする
+                        ctx.fillStyle = "rgba(255,255,255,0.3)";
+                        ctx.fillRect(0, 0, cw, ch);
+
+                        //2. ループを使った線の描画（背景の模様など）
+                        for (let i = 0; i < loopNum; i++){
+                                //ランダムな線の色を設定
+                                ctx.strokeStyle = "rgba(" + getRandomColor() + "," + getRandomColor() + "," + getRandomColor() + "," + getRandomAlpha() + ")";
+                                ctx.lineWidth = 1;
+                                
+                                //線の描画
+                                ctx.beginPath();
+                                ctx.moveTo(i * cw / loopNum, 0);
+                                ctx.lineTo(cw - i * cw / loopNum, ch);
+                                ctx.stroke();
+                        }
+
+                        //3. 【ループとは別に】同時に表示・固定したい四角形の描画
+                        // 塗りつぶしの色を設定
+                        ctx.fillStyle = "rgba(255, 0, 0, 0.8)"; // 赤色の四角形
+                        
+                        // 左側の四角形 (x: 100, y: 350, 幅: 150, 高さ: 100)
+                        ctx.fillRect(100, 350, 150, 100);
+                        
+                        // 右側の四角形 (x: 750, y: 350, 幅: 150, 高さ: 100)
+                        ctx.fillRect(750, 350, 150, 100);
+                } // ← draw() の閉じカッコ
+
+                //ランダムな数値を返す
+                function getRandomNum(num){
+                        return Math.floor(Math.random() * num);
+                }
+                function getRandomColor(){
+                        return Math.floor(Math.random() * 255);
+                }
+                function getRandomAlpha(){
+                        return Math.random();
+                }
+        </script>
+</head>
+<body onload="init();">
+        <h1>Canvas Test</h1>
+        <canvas id="mycanvas" width="1000" height="800"></canvas>
+</body>
+</html>

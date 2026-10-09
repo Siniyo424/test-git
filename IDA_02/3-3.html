@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>素数一覧</title>
+</head>
+<body>
+
+<script>
+    function primenumber(n) {
+        let i = 2;
+
+        while (i < n) {
+            if (n % i == 0) {
+                return 0; // 素数ではない
+            }
+
+            i++;
+        }
+
+        return 1; // 素数
+    }
+
+    function primenumberlist(n) {
+        document.write(n + "までの素数は<br>");
+
+        for (let i = 2; i < n; i++) {
+            if (primenumber(i) == 1) {
+                document.write(i + " ");
+            }
+        }
+
+        document.write("<br>です。");
+    }
+
+    primenumberlist(112);
+</script>
+
+</body>
+</html>

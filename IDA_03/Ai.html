@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>Canvas Test</title>
+        <script>
+                // canvasの中身
+                let ctx;
+                // canvas のwidth
+                let cw;
+                // canvas のheight
+                let ch;
+                // 1回で描画する数
+                const loopNum = 30;
+
+                // 初期化処理
+                function init() {
+                        // IDがmycanvasのものをcanvasという変数に入れておく
+                        let canvas = document.getElementById('mycanvas');
+                        // canvasが存在しないか、canvasの中身がなければ処理終了
+                        if (!canvas || !canvas.getContext) {
+                                return false;
+                        }
+                        // canvasの中身を指し示すものを代入
+                        ctx = canvas.getContext('2d');
+                        // 全体の透明度を設定
+                        ctx.globalAlpha = 0.6;
+                        // canvasの幅・高さを代入
+                        cw = canvas.width;
+                        ch = canvas.height;
+
+                        // 実際の描画処理
+                        draw();
+
+                        // 一定時間ごとに書き換える
+                        setInterval("draw()", 300);
+                }
+
+                function draw() {
+                        // ▼ 【ここを追加】毎回の描画の最初に、画面全体を白でリセット（消去）する
+                        ctx.fillStyle = "rgba(255, 255, 255,1)";
+                        ctx.fillRect(0, 0, cw, ch);
+
+                        // 今回どの図形を出すかを完全にランダムで1つだけ決める（0:線, 1:長方形, 2:円）
+                        let mode = Math.floor(Math.random() * 3);
+
+                        // 決まった図形だけをループでまとめて描画する
+                        for (let i = 0; i < loopNum; i++) {
+                                
+                                if (mode === 0) {
+                                        // 【この瞬間は「線だけ」】
+                                        ctx.strokeStyle = "rgba(" + getRandomColor() + "," + getRandomColor() + "," + getRandomColor() + "," + getRandomAlpha() + ")";
+                                        ctx.lineWidth = 1;
+                                        ctx.beginPath();
+                                        ctx.moveTo(getRandomNum(cw), getRandomNum(ch));
+                                        ctx.lineTo(getRandomNum(cw), getRandomNum(ch));
+                                        ctx.stroke();
+
+                                } else if (mode === 1) {
+                                        // 【この瞬間は「長方形だけ」】
+                                        ctx.fillStyle = "rgba(" + getRandomColor() + "," + getRandomColor() + "," + getRandomColor() + "," + getRandomAlpha() + ")";
+                                        ctx.fillRect(getRandomNum(cw), getRandomNum(ch), getRandomNum(cw) / 3, getRandomNum(ch) / 3);
+
+                                } else {
+                                        // 【この瞬間は「円だけ」】
+                                        ctx.fillStyle = "rgba(" + getRandomColor() + "," + getRandomColor() + "," + getRandomColor() + "," + getRandomAlpha() + ")";
+                                        ctx.beginPath();
+                                        ctx.arc(getRandomNum(cw), getRandomNum(ch), getRandomNum(cw / 15), 0, Math.PI * 2, true);
+                                        ctx.fill();
+                                }
+                        }
+                }
+
+                // ランダムな数値を返す
+                function getRandomNum(num) {
+                        return Math.floor(Math.random() * num);
+                }
+                function getRandomColor() {
+                        return Math.floor(Math.random() * 255);
+                }
+                function getRandomAlpha() {
+                        return Math.random();
+                }
+        </script>
+</head>
+<body onload="init();">
+        <h1>Canvas Test</h1>
+        <canvas id="mycanvas" width="1000" height="800"></canvas>
+</body>
+</html>
